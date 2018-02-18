@@ -66,7 +66,7 @@ systemctl is-enabled $BLT_USER #To check whetether Bitcoin Lightning service is 
   
 Any donation is highly appreciated  
 
-**BLT**: BJi5gsBre4NHsi2jkRUASBakK2sUsNrBjP
+**BLT**: BJi5gsBre4NHsi2jkRUASBakK2sUsNrBjP  
 **BTC**: 1BzeQ12m4zYaQKqysGNVbQv1taN7qgS8gY  
 **ETH**: 0x39d10fe57611c564abc255ffd7e984dc97e9bd6d  
 **LTC**: LXrWbfeejNQRmRvtzB6Te8yns93Tu3evGf  
