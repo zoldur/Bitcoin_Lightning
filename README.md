@@ -1,11 +1,12 @@
 # Bitcoin Lightning
 Shell script to install a [Bitcoin Lightning Masternode](https://http://www.bitcoinlightning.co.uk//) on a Linux server running Ubuntu 16.04. Use it on your own risk.  
-
 ***
-## Installation:  
 
-wget -q https://raw.githubusercontent.com/zoldur/Bitcoin_Lightning/master/btl_install.sh  
+## Installation:  
+```
+wget -q https://raw.githubusercontent.com/zoldur/Bitcoin_Lightning/master/btl_install.sh
 bash btl_install.sh
+```
 ***
 
 ## Desktop wallet setup  
@@ -28,40 +29,39 @@ After the MN is up and running, you need to configure the desktop wallet accordi
 * Reward %: leave blank  
 9. Click **OK** to add the masternode  
 10. Click **Start All**  
-
 ***
 
 ## Multiple MN on one VPS:
 
 It is possible to run multiple **Bitcoin Lightning** Master Nodes on the same VPS. Each MN will run under a different user you will choose during installation.  
-
 ***
-
 
 ## Usage:  
 
 For security reasons **Bitcoin Lightning** is installed under **btl** user, hence you need to **su - btl** before checking:    
-
 ```
 BLT_USER=btl #replace btl with the MN username you want to check
-
 su - $BLT_USER  
-Sancheziumd masternode status  
-Sancheziumd getinfo  
+Bitcoing_Lightningd masternode status  
+Bitcoing_Lightningd getinfo  
 ```  
-
 Also, if you want to check/start/stop **Bitcoin Ligthning** , run one of the following commands as **root**:
 
 ```
 BLT_USER=btl  #replace btl with the MN username you want to check  
-  
+ 
 systemctl status $BLT_USER #To check the service is running.  
 systemctl start $BLT_USER #To start Bitcoin Lightning service.  
 systemctl stop $ABLT_USER #To stop Bitcoin Lightning service.  
 systemctl is-enabled $BLT_USER #To check whetether Bitcoin Lightning service is enabled on boot or not.  
 ```  
-
 ***
+
+## Issues:
+
+```
+
+```
 
   
 Any donation is highly appreciated  
