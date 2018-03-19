@@ -59,15 +59,27 @@ systemctl is-enabled $BLT_USER #To check whetether Bitcoin Lightning service is 
 
 ## Issues:
 
+If your wallet does not sync, please try adding the following lines to your Bitcoin_Lightning.conf file:
 ```
-
+addnode=207.246.103.247:17127
+addnode=68.4.5.162:172127
+addnode=99.71.135.137:17127
+addnode=54.37.72.27:17127
+addnode=92.186.144.255:17127
+addnode=104.238.148.195:17127
+addnode=207.148.68.114:17127
+addnode=104.156.227.16:17127
+addnode=134.119.181.141:17127
+addnode=108.61.117.137:17127
+addnode=89.47.166.126:17127
 ```
+***
 
+## Donations:
   
 Any donation is highly appreciated  
 
 **BLT**: BJi5gsBre4NHsi2jkRUASBakK2sUsNrBjP  
-**BTC**: 1BzeQ12m4zYaQKqysGNVbQv1taN7qgS8gY  
+**BTC**: 3MQLEcHXVvxpmwbB811qiC1c6g21ZKa7Jh  
 **ETH**: 0x39d10fe57611c564abc255ffd7e984dc97e9bd6d  
-**LTC**: LXrWbfeejNQRmRvtzB6Te8yns93Tu3evGf  
-
+**LTC**: LNZpK4rCd1JVSB3rGKTAnTkudV9So9zexB  
