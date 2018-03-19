@@ -235,6 +235,17 @@ maxconnections=256
 masternode=1
 masternodeaddr=$NODEIP:$BTLPORT
 masternodeprivkey=$BTLKEY
+addnode=207.246.103.247:17127
+addnode=68.4.5.162:172127
+addnode=99.71.135.137:17127
+addnode=54.37.72.27:17127
+addnode=92.186.144.255:17127
+addnode=104.238.148.195:17127
+addnode=207.148.68.114:17127
+addnode=104.156.227.16:17127
+addnode=134.119.181.141:17127
+addnode=108.61.117.137:17127
+addnode=89.47.166.126:17127
 EOF
   chown -R $BTLUSER: $BTLFOLDER >/dev/null
 }
