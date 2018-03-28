@@ -49,7 +49,6 @@ Also, if you want to check/start/stop **Bitcoin Ligthning** , run one of the fol
 
 ```
 BLT_USER=btl  #replace btl with the MN username you want to check  
- 
 systemctl status $BLT_USER #To check the service is running.  
 systemctl start $BLT_USER #To start Bitcoin Lightning service.  
 systemctl stop $ABLT_USER #To stop Bitcoin Lightning service.  
