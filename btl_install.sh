@@ -47,7 +47,7 @@ fi
 
 function prepare_system() {
 
-echo -e "Preparing the system to install Bitcoin-Lightning master node."
+echo -e "Preparing the system to install BitcoinLightning master node."
 apt-get update >/dev/null 2>&1
 DEBIAN_FRONTEND=noninteractive apt-get update > /dev/null 2>&1
 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -y -qq upgrade >/dev/null 2>&1
@@ -78,7 +78,7 @@ clear
 }
 
 function compile_node() {
-  echo -e "Downloading BTL binaru files."
+  echo -e "Downloading BTL binary files."
   cd $TMP_FOLDER
   wget -q $BTL_REPO
   tar xvzf $BTL_ZIP >/dev/null 2>&1
