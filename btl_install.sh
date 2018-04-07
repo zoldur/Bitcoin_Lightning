@@ -3,7 +3,8 @@
 TMP_FOLDER=$(mktemp -d)
 CONFIG_FILE="Bitcoin_Lightning.conf"
 BTL_DAEMON="/usr/local/bin/Bitcoin_Lightningd"
-BTL_REPO="https://github.com/Bitcoinlightning/Bitcoin-Lightning.git"
+BTL_REPO="https://github.com/Bitcoinlightning/Bitcoin-Lightning/releases/download/v1.1.0.0/Bitcoin_Lightning-Daemon-1.1.0.0.tar.gz"
+BTL_ZIP=$(echo $BTL_REPO | awk -F'/' '{print $NF}')
 DEFAULTBTLPORT=17127
 DEFAULTBTLUSER="btl"
 NODEIP=$(curl -s4 icanhazip.com)
@@ -46,7 +47,7 @@ fi
 
 function prepare_system() {
 
-echo -e "Prepare the system to install Bitcoin-Lightning master node."
+echo -e "Preparing the system to install Bitcoin-Lightning master node."
 apt-get update >/dev/null 2>&1
 DEBIAN_FRONTEND=noninteractive apt-get update > /dev/null 2>&1
 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -y -qq upgrade >/dev/null 2>&1
@@ -58,7 +59,7 @@ apt-get update >/dev/null 2>&1
 apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" make software-properties-common \
 build-essential libtool autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev \
 libboost-system-dev libboost-test-dev libboost-thread-dev sudo automake git wget pwgen curl libdb4.8-dev bsdmainutils libdb4.8++-dev \
-libminiupnpc-dev libgmp3-dev ufw fail2ban >/dev/null 2>&1
+libminiupnpc-dev libgmp3-dev ufw >/dev/null 2>&1
 clear
 if [ "$?" -gt "0" ];
   then
@@ -69,51 +70,23 @@ if [ "$?" -gt "0" ];
     echo "apt-get update"
     echo "apt install -y make build-essential libtool software-properties-common autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev \
 libboost-program-options-dev libboost-system-dev libboost-test-dev libboost-thread-dev sudo automake git pwgen curl libdb4.8-dev \
-bsdmainutils libdb4.8++-dev libminiupnpc-dev libgmp3-dev ufw fail2ban "
+bsdmainutils libdb4.8++-dev libminiupnpc-dev libgmp3-dev ufw"
  exit 1
 fi
 
 clear
-echo -e "Checking if swap space is needed."
-PHYMEM=$(free -g|awk '/^Mem:/{print $2}')
-SWAP=$(free -g|awk '/^Swap:/{print $2}')
-if [ "$PHYMEM" -lt "2" ] && [ -n "$SWAP" ]
-  then
-    echo -e "${GREEN}Server is running with less than 2G of RAM without SWAP, creating 2G swap file.${NC}"
-    SWAPFILE=$(mktemp)
-    dd if=/dev/zero of=$SWAPFILE bs=1024 count=2M
-    chmod 600 $SWAPFILE
-    mkswap $SWAPFILE
-    swapon -a $SWAPFILE
-else
-  echo -e "${GREEN}Server running with at least 2G of RAM, no swap needed.${NC}"
-fi
-clear
 }
 
 function compile_node() {
-  echo -e "Clone git repo and compile it. This may take some time. Press a key to continue."
+  echo -e "Downloading BTL binaru files."
   cd $TMP_FOLDER
-  git clone https://github.com/bitcoin-core/secp256k1
-  cd secp256k1
-  chmod +x ./autogen.sh
-  ./autogen.sh
-  ./configure
-  make
-  ./tests
-  make install
-  clear
-
-  cd $TMP_FOLDER
-  git clone $BTL_REPO
-  cd Bitcoin-Lightning/src
-  make -f makefile.unix
-  compile_error Bitcoin-Lightning 
-  chmod +x  Bitcoin_Lightningd
-  cp -a  Bitcoin_Lightningd /usr/local/bin
-  clear
-  cd ~
+  wget -q $BTL_REPO
+  tar xvzf $BTL_ZIP >/dev/null 2>&1
+  chmod +x ./Bitcoin_Lightningd
+  cp -a  ./Bitcoin_Lightningd /usr/local/bin 
+  cd ~ >/dev/null 2>&1
   rm -rf $TMP_FOLDER
+  clear
 }
 
 function enable_firewall() {
@@ -124,8 +97,6 @@ function enable_firewall() {
   ufw limit ssh/tcp >/dev/null 2>&1
   ufw default allow outgoing >/dev/null 2>&1
   echo "y" | ufw enable >/dev/null 2>&1
-  systemctl enable fail2ban >/dev/null 2>&1
-  systemctl start fail2ban >/dev/null 2>&1
 }
 
 function configure_systemd() {
@@ -135,11 +106,20 @@ Description=BTL service
 After=network.target
 
 [Service]
-ExecStart=$BTL_DAEMON -conf=$BTLFOLDER/$CONFIG_FILE -datadir=$BTLFOLDER
+Type=forking
+
+ExecStart=$BTL_DAEMON -daemon -conf=$BTLFOLDER/$CONFIG_FILE -datadir=$BTLFOLDER
 ExecStop=$BTL_DAEMON -conf=$BTLFOLDER/$CONFIG_FILE -datadir=$BTLFOLDER stop
-Restart=on-abort
+
 User=$BTLUSER
 Group=$BTLUSER
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=10s
+StartLimitInterval=120s
+StartLimitBurst=5
 
 [Install]
 WantedBy=multi-user.target
