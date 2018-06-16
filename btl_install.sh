@@ -7,7 +7,7 @@ BTL_REPO="https://github.com/Bitcoinlightning/Bitcoin-Lightning/releases/downloa
 BTL_ZIP=$(echo $BTL_REPO | awk -F'/' '{print $NF}')
 DEFAULTBTLPORT=17127
 DEFAULTBTLUSER="btl"
-NODEIP=$(curl -s4 icanhazip.com)
+NODEIP=$(curl -s4 api.ipify.org)
 
 
 RED='\033[0;31m'
